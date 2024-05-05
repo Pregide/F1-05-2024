@@ -12,7 +12,7 @@ public class MonTroncon implements Trancon {
     private final Lieu DEPART, ARRIVEE;
     private final Map<TypeCout, Double> COUT = new HashMap<TypeCout, Double>();
 
-    public MonTroncon(ModaliteTransport modalite, Lieu depart, Lieu arrivee, double co2, double time, double price){
+    public MonTroncon(ModaliteTransport modalite, Lieu depart, Lieu arrivee, double price, double co2, double time){
         this.MODALITE = modalite;
         this.DEPART = depart;
         this.ARRIVEE = arrivee;
