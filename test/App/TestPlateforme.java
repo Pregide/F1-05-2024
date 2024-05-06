@@ -29,6 +29,36 @@ public class TestPlateforme {
     }
 
     @Test
+    public void testIsValid() {
+        String[] inputData = {
+            "a;null;Train;10;20;30",
+            "a;b;Avion;40;50;60",
+            "c;d;Bus;70;80;90"
+        };
+    
+        String[][] expectedRes = {
+            {"Une des valeurs de cette ligne est incorrecte"},
+            {"a", "b", "Avion", "40", "50", "60"},
+            {"c", "d", "Bus", "70", "80", "90"}
+        };
+
+        String[] inputData2 = {
+            "a;"+null+";Train;10;20;30",
+            "a;b;Avion;40;50;60",
+            "c;d;Bus;70;80"
+        };
+    
+        String[][] expectedRes2 = {
+            {"Une des valeurs de cette ligne est incorrecte"},
+            {"a", "b", "Avion", "40", "50", "60"},
+            {"Données insuffisantes après split"}
+        };
+
+        assertArrayEquals(expectedRes, p.ventilation(inputData));
+        assertArrayEquals(expectedRes2, p.ventilation(inputData2));
+    }
+
+    @Test
     public void testListLieu(){
         Lieu l1 = new MonLieu("Arras");
         Lieu l2 = new MonLieu("Douai");

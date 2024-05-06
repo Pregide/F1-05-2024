@@ -21,18 +21,44 @@ public class Plateforme {
     public int getSizeTroncons(){return troncons.size();}
 
     /**
+     * prend un tableau de donnée d'une dimmension et vérifie si toutes les données sont valides à pour la ventilation
+     * 
+     * @param data
+     * @return
+     */
+    private boolean isValid(String[] data){
+        boolean isValid = true;
+        for (int i=0;i<data.length;++i){
+            if (data[i] == null || data[i].equals("null")){
+                isValid=false;
+            }
+        }
+        return isValid;
+    }
+
+    /**
      * Séparation des données récupérer dans un tableau a 2 dimmansions
      * 
      * @param data l'ensemble des données récupérer
      * @return retourne un tableau de 2 dimensions contenant toute les valeurs
      */
-    public String[][] ventilation(String[] data){
+    public String[][] ventilation(String[] data) {
         String[][] res = new String[data.length][6];
-        for(int i=0; i<res.length; i++){
-            res[i] = data[i].split(";");
-            MonLieu dep = new MonLieu(res[i][0]), dest = new MonLieu(res[i][1]);
-            listLieux(dep, dest);
-            listTroncon(dep, dest, res[i]);
+        for (int i = 0; i < data.length; i++) {
+            String[] parts = data[i].split(";");
+            if (isValid(parts)) {
+                if (parts.length >= 6) {
+                    res[i] = parts;
+                    MonLieu dep = new MonLieu(parts[0]);
+                    MonLieu dest = new MonLieu(parts[1]);
+                    listLieux(dep, dest);
+                    listTroncon(dep, dest, parts);
+                } else {
+                    res[i] = new String[] {"Données insuffisantes après split"};
+                }
+            } else {
+                res[i] = new String[] {"Une des valeurs de cette ligne est incorrecte"};
+            }
         }
         return res;
     }
