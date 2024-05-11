@@ -4,17 +4,18 @@ import java.util.ArrayList;
 
 import fr.ulille.but.sae_s2_2024.Lieu;
 import fr.ulille.but.sae_s2_2024.ModaliteTransport;
-import fr.ulille.but.sae_s2_2024.Trancon;
+import fr.ulille.but.sae_s2_2024.MultiGrapheOrienteValue;
 import graph.MonLieu;
 import graph.MonTroncon;
 
 public class Plateforme {
     private final ArrayList<Lieu> lieux = new ArrayList<Lieu>();
-    private final ArrayList<Trancon> troncons = new ArrayList<Trancon>();
+    private final ArrayList<MonTroncon> troncons = new ArrayList<MonTroncon>();
+    private final MultiGrapheOrienteValue graphe = new MultiGrapheOrienteValue();
 
 
     public Plateforme(String[] data){
-        ventilation(data);
+        addData(ventilation(data));
     }
 
     public int getSizeLieux(){return lieux.size();}
@@ -23,17 +24,16 @@ public class Plateforme {
     /**
      * prend un tableau de donnée d'une dimmension et vérifie si toutes les données sont valides à pour la ventilation
      * 
-     * @param data
-     * @return
+     * @param data les données à vérifier
+     * @return retourne si les données sont valides ou non
      */
     private boolean isValid(String[] data){
-        boolean isValid = true;
         for (int i=0;i<data.length;++i){
-            if (data[i] == null || data[i].equals("null")){
-                isValid=false;
+            if (data[i].charAt(0) == '-' || data[i].equals("null")){
+                return false;
             }
         }
-        return isValid;
+        return true;
     }
 
     /**
@@ -47,7 +47,7 @@ public class Plateforme {
         for (int i = 0; i < data.length; i++) {
             String[] parts = data[i].split(";");
             if (isValid(parts)) {
-                if (parts.length >= 6) {
+                if (parts.length == 6) {
                     res[i] = parts;
                     MonLieu dep = new MonLieu(parts[0]);
                     MonLieu dest = new MonLieu(parts[1]);
@@ -57,7 +57,7 @@ public class Plateforme {
                     res[i] = new String[] {"Données insuffisantes après split"};
                 }
             } else {
-                res[i] = new String[] {"Une des valeurs de cette ligne est incorrecte"};
+                res[i] = new String[] {"Une des valeurs de cette ligne est invalide"};
             }
         }
         return res;
@@ -85,6 +85,21 @@ public class Plateforme {
         troncons.add(new MonTroncon(ModaliteTransport.valueOf(tab[2].toUpperCase()), dep, dest, Double.parseDouble(tab[3]), Double.parseDouble(tab[4]), Double.parseDouble(tab[5])));
         troncons.add(new MonTroncon(ModaliteTransport.valueOf(tab[2].toUpperCase()), dest, dep, Double.parseDouble(tab[3]), Double.parseDouble(tab[4]), Double.parseDouble(tab[5])));
     }
+
+    /**
+     * 
+     * @param data
+     */
+    private void addData(String[][] data){
+        for(Lieu lieu : lieux){
+            graphe.ajouterSommet(lieu);
+        }
+        for(MonTroncon troncon : troncons){
+            graphe.ajouterArete(troncon, troncon.getCoutCo2());
+        }
+    }
+
+    
 
     public String toString(){
         return "";

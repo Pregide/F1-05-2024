@@ -37,19 +37,19 @@ public class TestPlateforme {
         };
     
         String[][] expectedRes = {
-            {"Une des valeurs de cette ligne est incorrecte"},
+            {"Une des valeurs de cette ligne est invalide"},
             {"a", "b", "Avion", "40", "50", "60"},
             {"c", "d", "Bus", "70", "80", "90"}
         };
 
         String[] inputData2 = {
-            "a;"+null+";Train;10;20;30",
+            "a;-10;Train;10;20;30",
             "a;b;Avion;40;50;60",
             "c;d;Bus;70;80"
         };
     
         String[][] expectedRes2 = {
-            {"Une des valeurs de cette ligne est incorrecte"},
+            {"Une des valeurs de cette ligne est invalide"},
             {"a", "b", "Avion", "40", "50", "60"},
             {"Données insuffisantes après split"}
         };
