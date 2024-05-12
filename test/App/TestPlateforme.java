@@ -3,6 +3,8 @@ package App;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,28 +21,36 @@ public class TestPlateforme {
 
     @Test
     public void testVentilation(){
-        String[][] res = new String[][]{{"a", "b", "Train", "10", "20", "30"},
-                                        {"a", "b", "Avion", "40", "50", "60"},
-                                        {"c", "d", "Bus", "70", "80", "90"}};
+        ArrayList<String[]> expected = new ArrayList<String[]>();
+        expected.add(new String[]{"a", "b", "Train", "10", "20", "30"});
+        expected.add(new String[]{"a", "b", "Avion", "40", "50", "60"});
+        expected.add(new String[]{"c", "d", "Bus", "70", "80", "90"});
 
-        assertArrayEquals(res, p.ventilation(new String[]{"a;b;Train;10;20;30",
-                                                            "a;b;Avion;40;50;60",
-                                                            "c;d;Bus;70;80;90"}));
+        ArrayList<String[]> test = p.ventilation(new String[]{"a;b;Train;10;20;30",
+                                                        "a;b;Avion;40;50;60",
+                                                        "c;d;Bus;70;80;90"});
+
+        for(int i=0; i<expected.size(); i++){
+            assertArrayEquals(expected.get(i), test.get(i));
+        }
     }
 
     @Test
     public void testIsValid() {
+        ArrayList<String[]> expected =new ArrayList<String[]>();
+
         String[] inputData = {
             "a;null;Train;10;20;30",
             "a;b;Avion;40;50;60",
             "c;d;Bus;70;80;90"
         };
-    
-        String[][] expectedRes = {
-            {"Une des valeurs de cette ligne est invalide"},
-            {"a", "b", "Avion", "40", "50", "60"},
-            {"c", "d", "Bus", "70", "80", "90"}
-        };
+
+        expected.add(new String[]{"a", "b", "Avion", "40", "50", "60"});
+        expected.add(new String[]{"c", "d", "Bus", "70", "80", "90"});
+
+        for(int i=0; i<expected.size(); i++){
+            assertArrayEquals(expected.get(i), p.ventilation(inputData).get(i));
+        }
 
         String[] inputData2 = {
             "a;-10;Train;10;20;30",
@@ -48,14 +58,25 @@ public class TestPlateforme {
             "c;d;Bus;70;80"
         };
     
-        String[][] expectedRes2 = {
-            {"Une des valeurs de cette ligne est invalide"},
-            {"a", "b", "Avion", "40", "50", "60"},
-            {"Données insuffisantes après split"}
+        expected.clear();
+        expected.add(new String[]{"a", "b", "Avion", "40", "50", "60"});
+
+        for(int i=0; i<expected.size(); i++){
+            assertArrayEquals(expected.get(i), p.ventilation(inputData2).get(i));
+        }
+
+        String[] inputData3 = {
+            "a;-10;Train;10;20;30",
+            "a;b;Avion;40;50;60",
+            "c;d;Bus;70;80;0;10"
         };
 
-        assertArrayEquals(expectedRes, p.ventilation(inputData));
-        assertArrayEquals(expectedRes2, p.ventilation(inputData2));
+        expected.clear();
+        expected.add(new String[]{"a", "b", "Avion", "40", "50", "60"});
+
+        for(int i=0; i<expected.size(); i++){
+            assertArrayEquals(expected.get(i), p.ventilation(inputData3).get(i));
+        }
     }
 
     @Test
@@ -80,8 +101,9 @@ public class TestPlateforme {
     public void testListTroncon(){
         assertEquals(0, p.getSizeTroncons());
 
-        p.ventilation(new String[]{"a;b;Train;10;20;30",
-                                    "a;b;Avion;40;50;60"});
-        assertEquals(4, p.getSizeTroncons());
+        p.ventilation(new String[]{"Lion;Boiry;Train;10;20;30",
+        "Lion;Boiry;Avion;40;50;60",
+        "Courcheveille;Dijon;Bus;70;80;90"});
+        assertEquals(6, p.getSizeTroncons());
     }
 }
