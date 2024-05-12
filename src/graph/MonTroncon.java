@@ -37,15 +37,7 @@ public class MonTroncon implements Trancon {
         return MODALITE;
     }
 
-    public double getCoutCo2(){
-        return COUT.get(TypeCout.CO2);
-    }
-
-    public double getCoutPrix(){
-        return COUT.get(TypeCout.PRIX);
-    }
-
-    public double getCoutTemps(){
-        return COUT.get(TypeCout.TEMPS);
+    public double getCout(TypeCout cout){
+        return COUT.get(cout);
     }
 }
