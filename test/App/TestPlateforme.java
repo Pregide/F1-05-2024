@@ -1,5 +1,7 @@
 package App;
 
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -8,15 +10,14 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.ulille.but.sae_s2_2024.Lieu;
-import graph.MonLieu;
+import fr.ulille.but.sae_s2_2024.MultiGrapheOrienteValue;
 
 public class TestPlateforme {
     Plateforme p;
 
     @BeforeEach
     public void initial(){
-        p = new Plateforme(new String[]{});
+        p = new Plateforme(new String[]{""});
     }
 
     @Test
@@ -33,6 +34,8 @@ public class TestPlateforme {
         for(int i=0; i<expected.size(); i++){
             assertArrayEquals(expected.get(i), test.get(i));
         }
+
+        assertNull(p.ventilation(null));
     }
 
     @Test
@@ -81,29 +84,38 @@ public class TestPlateforme {
 
     @Test
     public void testListLieu(){
-        Lieu l1 = new MonLieu("Arras");
-        Lieu l2 = new MonLieu("Douai");
-        Lieu l3 = new MonLieu("Lille");
-
+        p = new Plateforme(null);
         assertEquals(0, p.getSizeLieux());
-
-        p.listLieux(l1, l2);
-        assertEquals(2, p.getSizeLieux());
-
-        p.listLieux(l1, l3);
-        assertEquals(3, p.getSizeLieux());
-
-        p.listLieux(l3, l1);
-        assertEquals(3, p.getSizeLieux());
+        p.listLieux("Arras");
+        assertEquals(1, p.getSizeLieux());
+        p.listLieux("Arras");
+        assertEquals(1, p.getSizeLieux());
     }
 
     @Test
     public void testListTroncon(){
+        p = new Plateforme(null);
         assertEquals(0, p.getSizeTroncons());
 
         p.ventilation(new String[]{"Lion;Boiry;Train;10;20;30",
         "Lion;Boiry;Avion;40;50;60",
         "Courcheveille;Dijon;Bus;70;80;90"});
+        
         assertEquals(6, p.getSizeTroncons());
+    }
+
+    @Test
+    public void testAddData(){
+
+        assertEquals(0, p.getGraphe().sommets().size());
+        assertEquals(0, p.getGraphe().aretes().size());
+
+        p = new Plateforme(new String[]{"a;b;Train;10;11;12"});
+        assertEquals(2, p.getGraphe().sommets().size());
+        assertEquals(2, p.getGraphe().aretes().size());
+
+        p = new Plateforme(new String[]{"a;b;Train;10;11;12", "a;c;Train;13;14;15"});
+        assertEquals(3, p.getGraphe().sommets().size());
+        assertEquals(4, p.getGraphe().aretes().size());
     }
 }

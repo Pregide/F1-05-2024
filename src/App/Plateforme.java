@@ -29,12 +29,6 @@ public class Plateforme {
     public Lieu getLieu(int idx){return lieux.get(idx);}
     public MultiGrapheOrienteValue getGraphe(){return graphe;}
 
-    /**
-     * prend un tableau de donnée d'une dimmension et vérifie si toutes les données sont valides à pour la ventilation
-     * 
-     * @param data les données à vérifier
-     * @return retourne si les données sont valides ou non
-     */
     private boolean isValid(String[] data){
         for (int i=0;i<data.length;++i){
             if (data[i].charAt(0) == '-' || data[i].equals("null")){
@@ -45,21 +39,24 @@ public class Plateforme {
     }
 
     /**
-     * Séparation des données récupérer dans un tableau a 2 dimmansions
+     * Séparation des données récupérer dans une ArrayList de tableau de String, chaque entré est un tajet et le tableau de cette entré répertorie la ville de départ, la ville d'arrivé, le moyen de transport, la pollution, le temps et le prix de ce trajet
      * 
      * @param data l'ensemble des données récupérer
      * @return retourne un tableau de 2 dimensions contenant toute les valeurs
      */
     public ArrayList<String[]> ventilation(String[] data) {
-        ArrayList<String[]> res = new ArrayList<String[]>();
-        for (String chaine : data) {
-            String[] parts = chaine.split(";");
-            if (parts.length == 6 && isValid(parts)) {
-                res.add(parts);
-                listTroncon(parts);
+        if(data != null){
+            ArrayList<String[]> res = new ArrayList<String[]>();
+            for (String chaine : data) {
+                String[] parts = chaine.split(";");
+                if (parts.length == 6 && isValid(parts)) {
+                    res.add(parts);
+                    listTroncon(parts);
+                }
             }
+            return res;
         }
-        return res;
+        return null;
     }
 
     /**
@@ -129,8 +126,8 @@ public class Plateforme {
         return res;
     }
 
-    public String toString(Voyageur v, int nbTagetDemande){
-        List<Chemin> chemin = AlgorithmeKPCC.kpcc(graphe, v.getdepart(), v.getArrive(), nbTagetDemande);
+    public String toString(Voyageur v, int nbTajetDemande){
+        List<Chemin> chemin = AlgorithmeKPCC.kpcc(graphe, v.getdepart(), v.getArrive(), nbTajetDemande);
         String res = "";
         for (Chemin traget : chemin) {
             res += traget + "\n";
