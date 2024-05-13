@@ -8,8 +8,10 @@ public class Main {
     public final static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) {
         Plateforme p = new Plateforme(new String[]{"Lion;Boiry;Train;10;20;30",
-                                                    "Courcheveille;Boiry;Avion;40;50;60",
-                                                    "Courcheveille;Dijon;Bus;70;80;90"});
+                                                    "Lion;Courcheveille;Train;20;10;30",
+                                                    "Boiry;Courcheveille;Train;40;50;60",
+                                                    "Boiry;Dijon;Train;25;25;24",
+                                                    "Courcheveille;Dijon;Train;70;80;90"});
         Voyageur v = new Voyageur(null, null);
         
         System.out.println("Quelle critère voulez vous privilégié ?");
@@ -32,5 +34,8 @@ public class Main {
         choice = sc.nextInt()-1;
         System.out.println("Lieu choisi : " + p.getLieu(choice));
         v.setArrive(p.getLieu(choice));
+
+        System.out.println("\nChemin possible : ");
+        System.out.println(p.toString(v, 1));
     }
 }

@@ -1,7 +1,10 @@
 package App;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import fr.ulille.but.sae_s2_2024.AlgorithmeKPCC;
+import fr.ulille.but.sae_s2_2024.Chemin;
 import fr.ulille.but.sae_s2_2024.Lieu;
 import fr.ulille.but.sae_s2_2024.ModaliteTransport;
 import fr.ulille.but.sae_s2_2024.MultiGrapheOrienteValue;
@@ -126,7 +129,12 @@ public class Plateforme {
         return res;
     }
 
-    public String toString(){
-        return "";
+    public String toString(Voyageur v, int nbTagetDemande){
+        List<Chemin> chemin = AlgorithmeKPCC.kpcc(graphe, v.getdepart(), v.getArrive(), nbTagetDemande);
+        String res = "";
+        for (Chemin traget : chemin) {
+            res += traget + "\n";
+        }
+        return res;
     }
 }
