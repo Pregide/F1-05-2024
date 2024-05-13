@@ -49,15 +49,11 @@ public class Plateforme {
      */
     public ArrayList<String[]> ventilation(String[] data) {
         ArrayList<String[]> res = new ArrayList<String[]>();
-        //String[][] res = new String[data.length][6];
-        for (int i = 0; i < data.length; i++) {
-            String[] parts = data[i].split(";");
+        for (String chaine : data) {
+            String[] parts = chaine.split(";");
             if (parts.length == 6 && isValid(parts)) {
                 res.add(parts);
-                Lieu dep = new MonLieu(parts[0]);
-                Lieu dest = new MonLieu(parts[1]);
-                listLieux(dep, dest);
-                listTroncon(dep, dest, parts);
+                listTroncon(parts);
             }
         }
         return res;
@@ -66,22 +62,26 @@ public class Plateforme {
     /**
      * Listage des Lieux, si le lieu n'existe pas dans la list actuel nous l'ajoutons sinon nous ne faisons rien
      * 
-     * @param dep Un lieu de départ
-     * @param dest Un lieu de destination
+     * @param lieu Nom d'un lieu 
+     * @return Retourne une instance de MonLieu si le Lieu n'existe pas sinon retourne le Lieu déjà connu a partir de la liste lieux
      */
-    public void listLieux(Lieu dep, Lieu dest){
-        if(!lieux.contains(dep)){lieux.add(dep);}
-        if(!lieux.contains(dest)){lieux.add(dest);}
+    public Lieu listLieux(String lieu){
+        Lieu tmp = new MonLieu(lieu);
+        if(lieux.contains(tmp)){
+            return lieux.get(lieux.indexOf(tmp));
+        }
+        lieux.add(tmp);
+        return tmp;
     }
 
     /**
      * Listage des Troncons, pour les deux villes un troncon est créer dans un sens puis dans l'autre 
      * 
-     * @param dep Lieu de départ
-     * @param dest Lieu de destination
      * @param tab Toute les informations sur un troncon
      */
-    public void listTroncon(Lieu dep, Lieu dest, String[] tab){
+    public void listTroncon(String[] tab){
+        Lieu dep = listLieux(tab[0]);
+        Lieu dest = listLieux(tab[1]);
         ModaliteTransport modalite = ModaliteTransport.valueOf(tab[2].toUpperCase());
         double co2 = Double.parseDouble(tab[3]);
         double temps = Double.parseDouble(tab[4]);
@@ -95,17 +95,27 @@ public class Plateforme {
         for(Lieu lieu : lieux){
             graphe.ajouterSommet(lieu);
         }
-        // for(Trancon troncon : troncons){
-        //     graphe.ajouterArete(troncon, ((MonTroncon) troncon).getCout(TypeCout.CO2));
-        // }
+        for(Trancon troncon : troncons){
+            graphe.ajouterArete(troncon, ((MonTroncon) troncon).getCout(TypeCout.CO2));
+        }
     }
 
+    /**
+     * Change le poids de toute les aretes du graphe selon le critère souhaiter de l'énumération TypeCout
+     * 
+     * @param cout Critère de séléction
+     */
     public void changeCritère(TypeCout cout){
         for (Trancon tr : graphe.aretes()) {
             graphe.modifierPoidsArete(tr, ((MonTroncon) tr).getCout(cout));
         }
     } 
 
+    /**
+     * Affiche la liste de tous les Lieux connus
+     * 
+     * @return Retourne la liste des lieux associé à un numéro 
+     */
     public String afficheListLieu(){
         String res = "";
         int i = 1;
