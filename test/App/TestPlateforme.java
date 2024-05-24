@@ -1,7 +1,6 @@
 package App;
 
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -9,8 +8,6 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import fr.ulille.but.sae_s2_2024.MultiGrapheOrienteValue;
 
 public class TestPlateforme {
     Plateforme p;
@@ -118,4 +115,10 @@ public class TestPlateforme {
         assertEquals(3, p.getGraphe().sommets().size());
         assertEquals(4, p.getGraphe().aretes().size());
     }
+
+    @Test
+    public void testChangeCritère(){}
+
+    @Test
+    public void testAfficheListLieu(){}
 }

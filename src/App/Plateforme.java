@@ -18,6 +18,14 @@ import graph.TypeCout;
 import java.util.Scanner;  
 
 public class Plateforme {
+    private final static int IDX_TEMPS = 5;
+    private final static int IDX_POLLUTION = 4;
+    private final static int IDX_PRIX = 3;
+    private final static int IDX_MODALITE = 2;
+    private final static int IDX_DESTINATION = 1;
+    private final static int IDX_DEPART = 0;
+    private final static String RESSOURCE = "res/";
+
     private final static int MAX_TIME_DURA = 180;
     private final ArrayList<Lieu> lieux = new ArrayList<Lieu>();
     private final ArrayList<Trancon> troncons = new ArrayList<Trancon>();
@@ -33,24 +41,23 @@ public class Plateforme {
     public Lieu getLieu(int idx){return lieux.get(idx);}
     public MultiGrapheOrienteValue getGraphe(){return graphe;}
 
-    /* 
+    
     private String[] scan(String path){
-        try {        
-            Scanner sc = new Scanner("csv"+new File(path));
+        try (Scanner sc = new Scanner(new File(RESSOURCE + path))){
             sc.useDelimiter(";");
-            String[] data=new String[];
+            String[] data=new String[]{};
+            int i=0;
             while (sc.hasNext())  
             {  
-                data+=sc.next();
+                data[i]+=sc.next();
+                i++;
             } 
             return data;
         } catch(FileNotFoundException e) {
             System.out.println("File not found: "); e.printStackTrace();
-        } catch(IOException e) {        // exemple prof du try catch, IOException non reachable donc jsp
-            System.out.println("Reading error: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }*/
+        } 
+        return null;
+    }
 
     private boolean isValid(String[] data){
         for (int i=0;i<data.length;++i){
@@ -103,12 +110,12 @@ public class Plateforme {
      * @param tab Toute les informations sur un troncon
      */
     public void listTroncon(String[] tab){
-        Lieu dep = listLieux(tab[0]);
-        Lieu dest = listLieux(tab[1]);
-        ModaliteTransport modalite = ModaliteTransport.valueOf(tab[2].toUpperCase());
-        double co2 = Double.parseDouble(tab[3]);
-        double temps = Double.parseDouble(tab[4]);
-        double prix = Double.parseDouble(tab[5]);
+        Lieu dep = listLieux(tab[IDX_DEPART]);
+        Lieu dest = listLieux(tab[IDX_DESTINATION]);
+        ModaliteTransport modalite = ModaliteTransport.valueOf(tab[IDX_MODALITE].toUpperCase());
+        double co2 = Double.parseDouble(tab[IDX_POLLUTION]);
+        double temps = Double.parseDouble(tab[IDX_TEMPS]);
+        double prix = Double.parseDouble(tab[IDX_PRIX]);
 
         troncons.add(new MonTroncon(modalite, dep, dest, co2, temps, prix));
         troncons.add(new MonTroncon(modalite, dest, dep, co2, temps, prix));
