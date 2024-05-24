@@ -7,20 +7,23 @@ import graph.TypeCout;
 public class Main {
     public final static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) {
-        Plateforme p = new Plateforme(new String[]{"villeA;villeB;Train;60;1.7;80",
-                                                    "villeB;villeD;Train;22;2.4;40",
-                                                    "villeA;villeC;Train;42;1.4;50",
-                                                    "villeB;villeC;Train;14;1.4;60",
-                                                    "villeC;villeD;Avion;110;150;22",
-                                                    "villeC;villeD;Train;65;1.2;90"});
         Voyageur v = new Voyageur(null, null);
+
+        System.out.println("Avant de commencer, assurez vous d'avoir fourni votre csv dans le dossier \"res\"?");
+
+        //ajout une boucle for qui liste tout les fichiers dans res, ex "1) fichier 1 \n 2) fichier 2" etc...
+
+        System.out.println("Veuillez indiquer l'indice de votre fichier");
+        int choice = sc.nextInt()-1;
+        String fichierName=""; //get fichier name from indice
+        Plateforme p=new Plateforme(fichierName); //remplacer fichier name par Scanner du contenue de /res/FichierName.csv
         
         System.out.println("Quelle critère voulez vous privilégié ?");
         System.out.println("1. Pollution");
         System.out.println("2. Temps");
         System.out.println("3. Prix");
 
-        int choice = sc.nextInt()-1;
+        choice = sc.nextInt()-1;
         p.changeCritère(TypeCout.values()[choice]);
         System.out.println("Critère sélectionné : " + TypeCout.values()[choice]);
 
