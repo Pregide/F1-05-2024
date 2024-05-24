@@ -1,5 +1,8 @@
 package App;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +15,7 @@ import fr.ulille.but.sae_s2_2024.Trancon;
 import graph.MonLieu;
 import graph.MonTroncon;
 import graph.TypeCout;
+import java.util.Scanner;  
 
 public class Plateforme {
     private final static int MAX_TIME_DURA = 180;
@@ -28,6 +32,25 @@ public class Plateforme {
     public int getSizeTroncons(){return troncons.size();}
     public Lieu getLieu(int idx){return lieux.get(idx);}
     public MultiGrapheOrienteValue getGraphe(){return graphe;}
+
+    /* 
+    private String[] scan(String path){
+        try {        
+            Scanner sc = new Scanner("csv"+new File(path));
+            sc.useDelimiter(";");
+            String[] data=new String[];
+            while (sc.hasNext())  
+            {  
+                data+=sc.next();
+            } 
+            return data;
+        } catch(FileNotFoundException e) {
+            System.out.println("File not found: "); e.printStackTrace();
+        } catch(IOException e) {        // exemple prof du try catch, IOException non reachable donc jsp
+            System.out.println("Reading error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }*/
 
     private boolean isValid(String[] data){
         for (int i=0;i<data.length;++i){
@@ -109,7 +132,7 @@ public class Plateforme {
         for (Trancon tr : graphe.aretes()) {
             graphe.modifierPoidsArete(tr, ((MonTroncon) tr).getCout(cout));
         }
-    } 
+    }
 
     /**
      * Affiche la liste de tous les Lieux connus
@@ -126,11 +149,11 @@ public class Plateforme {
         return res;
     }
 
-    public String toString(Voyageur v, int nbTajetDemande){
-        List<Chemin> chemin = AlgorithmeKPCC.kpcc(graphe, v.getdepart(), v.getArrive(), nbTajetDemande);
+    public String toString(Voyageur v, int nbTrajetDemande){
+        List<Chemin> chemin = AlgorithmeKPCC.kpcc(graphe, v.getdepart(), v.getArrive(), nbTrajetDemande);
         String res = "";
-        for (Chemin traget : chemin) {
-            res += traget + "\n";
+        for (Chemin trajet : chemin) {
+            res += trajet + "\n";
         }
         return res;
     }

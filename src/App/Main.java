@@ -7,11 +7,12 @@ import graph.TypeCout;
 public class Main {
     public final static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) {
-        Plateforme p = new Plateforme(new String[]{"Lion;Boiry;Train;10;20;30",
-                                                    "Lion;Courcheveille;Train;20;10;30",
-                                                    "Boiry;Courcheveille;Train;40;50;60",
-                                                    "Boiry;Dijon;Train;25;25;24",
-                                                    "Courcheveille;Dijon;Train;70;80;90"});
+        Plateforme p = new Plateforme(new String[]{"villeA;villeB;Train;60;1.7;80",
+                                                    "villeB;villeD;Train;22;2.4;40",
+                                                    "villeA;villeC;Train;42;1.4;50",
+                                                    "villeB;villeC;Train;14;1.4;60",
+                                                    "villeC;villeD;Avion;110;150;22",
+                                                    "villeC;villeD;Train;65;1.2;90"});
         Voyageur v = new Voyageur(null, null);
         
         System.out.println("Quelle critère voulez vous privilégié ?");
@@ -36,6 +37,6 @@ public class Main {
         v.setArrive(p.getLieu(choice));
 
         System.out.println("\nChemin possible : ");
-        System.out.println(p.toString(v, 1));
+        System.out.println(p.toString(v, 10));
     }
 }
