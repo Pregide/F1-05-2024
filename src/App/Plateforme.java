@@ -31,8 +31,8 @@ public class Plateforme {
     private final ArrayList<Trancon> troncons = new ArrayList<Trancon>();
     private final MultiGrapheOrienteValue graphe = new MultiGrapheOrienteValue();
 
-    public Plateforme(String[] data){
-        ventilation(data);
+    public Plateforme(String data){
+        ventilation(scan(data));
         addData();
     }
 
