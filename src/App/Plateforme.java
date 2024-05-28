@@ -1,38 +1,30 @@
 package App;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
-import fr.ulille.but.sae_s2_2024.AlgorithmeKPCC;
-import fr.ulille.but.sae_s2_2024.Chemin;
 import fr.ulille.but.sae_s2_2024.Lieu;
 import fr.ulille.but.sae_s2_2024.ModaliteTransport;
 import fr.ulille.but.sae_s2_2024.MultiGrapheOrienteValue;
 import fr.ulille.but.sae_s2_2024.Trancon;
 import graph.MonLieu;
 import graph.MonTroncon;
-import graph.TypeCout;
-import java.util.Scanner;  
+import graph.TypeCout;  
 
 public class Plateforme {
-    private final static int IDX_TEMPS = 5;
-    private final static int IDX_POLLUTION = 4;
-    private final static int IDX_PRIX = 3;
-    private final static int IDX_MODALITE = 2;
-    private final static int IDX_DESTINATION = 1;
     private final static int IDX_DEPART = 0;
-    private final static String RESSOURCE = "res/";
+    private final static int IDX_DESTINATION = 1;
+    private final static int IDX_MODALITE = 2;
+    private final static int IDX_PRIX = 3;
+    private final static int IDX_POLLUTION = 4;
+    private final static int IDX_TEMPS = 5;
 
-    private final static int MAX_TIME_DURA = 180;
     private final ArrayList<Lieu> lieux = new ArrayList<Lieu>();
     private final ArrayList<Trancon> troncons = new ArrayList<Trancon>();
     private final MultiGrapheOrienteValue graphe = new MultiGrapheOrienteValue();
 
-    public Plateforme(String data){
-        ventilation(scan(data));
+    public Plateforme(ArrayList<String> data) throws NullPointerException{
+        if(data == null) throw new NullPointerException();
+        ventilation(data);
         addData();
     }
 
@@ -41,27 +33,9 @@ public class Plateforme {
     public Lieu getLieu(int idx){return lieux.get(idx);}
     public MultiGrapheOrienteValue getGraphe(){return graphe;}
 
-    
-    private String[] scan(String path){
-        try (Scanner sc = new Scanner(new File(RESSOURCE + path))){
-            sc.useDelimiter(";");
-            String[] data=new String[]{};
-            int i=0;
-            while (sc.hasNext())  
-            {  
-                data[i]+=sc.next();
-                i++;
-            } 
-            return data;
-        } catch(FileNotFoundException e) {
-            System.out.println("File not found: "); e.printStackTrace();
-        } 
-        return null;
-    }
-
     private boolean isValid(String[] data){
-        for (int i=0;i<data.length;++i){
-            if (data[i].charAt(0) == '-' || data[i].equals("null")){
+        for (String string : data){
+            if (string.charAt(0) == '-' || string.equals("null")){
                 return false;
             }
         }
@@ -74,19 +48,13 @@ public class Plateforme {
      * @param data l'ensemble des données récupérer
      * @return retourne un tableau de 2 dimensions contenant toute les valeurs
      */
-    public ArrayList<String[]> ventilation(String[] data) {
-        if(data != null){
-            ArrayList<String[]> res = new ArrayList<String[]>();
-            for (String chaine : data) {
-                String[] parts = chaine.split(";");
-                if (parts.length == 6 && isValid(parts)) {
-                    res.add(parts);
-                    listTroncon(parts);
-                }
+    public void ventilation(ArrayList<String> data){
+        for (String chaine : data) {
+            String[] parts = chaine.split(";");
+            if (parts.length == 6 && isValid(parts)) {
+                listTroncon(parts);
             }
-            return res;
         }
-        return null;
     }
 
     /**
@@ -110,15 +78,26 @@ public class Plateforme {
      * @param tab Toute les informations sur un troncon
      */
     public void listTroncon(String[] tab){
-        Lieu dep = listLieux(tab[IDX_DEPART]);
-        Lieu dest = listLieux(tab[IDX_DESTINATION]);
-        ModaliteTransport modalite = ModaliteTransport.valueOf(tab[IDX_MODALITE].toUpperCase());
-        double co2 = Double.parseDouble(tab[IDX_POLLUTION]);
-        double temps = Double.parseDouble(tab[IDX_TEMPS]);
-        double prix = Double.parseDouble(tab[IDX_PRIX]);
+        if(!isModality(tab[IDX_DESTINATION])){
+            Lieu dep = listLieux(tab[IDX_DEPART]);
+            Lieu dest = listLieux(tab[IDX_DESTINATION]);
+            ModaliteTransport modalite = ModaliteTransport.valueOf(tab[IDX_MODALITE].toUpperCase());
+            double co2 = Double.parseDouble(tab[IDX_POLLUTION]);
+            double temps = Double.parseDouble(tab[IDX_TEMPS]);
+            double prix = Double.parseDouble(tab[IDX_PRIX]);
 
-        troncons.add(new MonTroncon(modalite, dep, dest, co2, temps, prix));
-        troncons.add(new MonTroncon(modalite, dest, dep, co2, temps, prix));
+            troncons.add(new MonTroncon(modalite, dep, dest, co2, temps, prix));
+            troncons.add(new MonTroncon(modalite, dest, dep, co2, temps, prix));
+        }
+    }
+
+    public boolean isModality(String str){
+        try {
+            ModaliteTransport.valueOf(str.toUpperCase());
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     private void addData(){
@@ -152,15 +131,6 @@ public class Plateforme {
         for (Lieu lieu : lieux) {
             res += i + ". " + lieu + "\n";
             i++;
-        }
-        return res;
-    }
-
-    public String toString(Voyageur v, int nbTrajetDemande){
-        List<Chemin> chemin = AlgorithmeKPCC.kpcc(graphe, v.getdepart(), v.getArrive(), nbTrajetDemande);
-        String res = "";
-        for (Chemin trajet : chemin) {
-            res += trajet + "\n";
         }
         return res;
     }
