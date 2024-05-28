@@ -1,5 +1,6 @@
 package App;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import graph.TypeCout;
@@ -8,17 +9,16 @@ public class Main {
     public final static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) {
         Voyageur v = new Voyageur(null, null);
+        Plateforme p;
 
-        System.out.println("Avant de commencer, assurez vous d'avoir fourni votre csv dans le dossier \"res\"?");
-
-        //ajout une boucle for qui liste tout les fichiers dans res, ex "1) fichier 1 \n 2) fichier 2" etc...
-
-        System.out.println("Veuillez indiquer l'indice de votre fichier");
-        int choice = sc.nextInt()-1;
-        String fichierName=""; //get fichier name from indice
-        Plateforme p=new Plateforme(fichierName); //remplacer fichier name par Scanner du contenue de /res/FichierName.csv
+        try {
+            p = new Plateforme(CSVUtil.selectionFile());
+        } catch (NullPointerException e){
+            p = new Plateforme(new ArrayList<>());
+        }
         
-        System.out.println("Quelle critère voulez vous privilégié ?");
+        int choice;
+        System.out.println("\nQuelle critère voulez vous privilégié ?");
         System.out.println("1. Pollution");
         System.out.println("2. Temps");
         System.out.println("3. Prix");
@@ -39,7 +39,9 @@ public class Main {
         System.out.println("Lieu choisi : " + p.getLieu(choice));
         v.setArrive(p.getLieu(choice));
 
-        System.out.println("\nChemin possible : ");
-        System.out.println(p.toString(v, 10));
+        try {
+            System.out.println("\nChemin possible : ");
+            System.out.println(v.trajet(p.getGraphe(), 10));
+        } catch (NoTravelFindException e){}
     }
 }
