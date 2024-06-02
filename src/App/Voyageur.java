@@ -2,10 +2,13 @@ package App;
 
 import java.util.List;
 
+import App.exception.NoTravelFoundException;
 import fr.ulille.but.sae_s2_2024.AlgorithmeKPCC;
 import fr.ulille.but.sae_s2_2024.Chemin;
 import fr.ulille.but.sae_s2_2024.Lieu;
+import fr.ulille.but.sae_s2_2024.ModaliteTransport;
 import fr.ulille.but.sae_s2_2024.MultiGrapheOrienteValue;
+import fr.ulille.but.sae_s2_2024.Trancon;
 
 public class Voyageur {
     private Lieu depart;
@@ -26,24 +29,32 @@ public class Voyageur {
     public void setdepart(Lieu depart) {this.depart = depart;}
     public void setArrive(Lieu arrive) {this.arrive = arrive;}
 
-    public String trajet(MultiGrapheOrienteValue graphe, int nbTrajetDemande) throws NoTravelFindException{
+    public String trajet(MultiGrapheOrienteValue graphe, ModaliteTransport moda, int nbTrajetDemande) throws NoTravelFoundException{
         List<Chemin> chemin = AlgorithmeKPCC.kpcc(graphe, depart, arrive, nbTrajetDemande);
         if(chemin.size() > 0){
             String res = "";
             for (Chemin trajet : chemin) {
-                res += trajet + "\n";
+                res += transcription(trajet) + "\n";
             }
-            return res;
+            if(res.length() > 0){
+                return res;
+            }            
         } 
-        throw new NoTravelFindException();
+        throw new NoTravelFoundException();
     }
 
-    /*
-     * symboliser un trajet de la façon suivante :
-     * 
-     * Marseille--Train-->Paris, Paris--Avion-->Lille, Lille--Train-->Londre
-     * 
-     * Le voyageur utilise le train de Marseille a Paris (on s'en fou par quel autre ville il passe) puis fait une correspondence pour prendre un avion direction 
-     * Lille et une autre correspondence pour terminé son trajet vers Londre en Train
-     */
+    public String transcription(Chemin chemin){
+        String res = "";
+        ModaliteTransport lastModa = null;
+        Lieu lastLieu = null;
+        for (Trancon tr : chemin.aretes()){
+            lastLieu = tr.getArrivee();
+            if(lastModa != tr.getModalite()){
+                lastModa = tr.getModalite();
+                res += tr.getDepart() + " ---" + lastModa + "--> ";
+            }
+        }
+        res +=  lastLieu + ", Poids: " + chemin.poids();
+        return res;
+    }
 }
