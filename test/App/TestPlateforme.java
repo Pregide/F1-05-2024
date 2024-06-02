@@ -1,92 +1,79 @@
 package App;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import fr.ulille.but.sae_s2_2024.Trancon;
+import graph.TypeCout;
+
 public class TestPlateforme {
     Plateforme p;
+    ArrayList<String> given;
 
     @BeforeEach
     public void initial(){
-        Plateforme p = new Plateforme("villeA;villeB;Train;60;1.7;80"+
-                                      "villeB;villeD;Train;22;2.4;40"+
-                                      "villeA;villeC;Train;42;1.4;50"+
-                                      "villeB;villeC;Train;14;1.4;60"+
-                                      "villeC;villeD;Avion;110;150;22"+
-                                      "villeC;villeD;Train;65;1.2;90");
+        given = new ArrayList<>();
+        p = new Plateforme(given);
+    }
+
+    @Test
+    public void testInitNull(){
+        boolean nullPointer = false;
+
+        try {
+            p = new Plateforme(null);
+        } catch (NullPointerException e){
+            nullPointer = true;
+        }
+
+        assertTrue(nullPointer);
     }
 
     @Test
     public void testVentilation(){
-        ArrayList<String[]> expected = new ArrayList<String[]>();
-        expected.add(new String[]{"a", "b", "Train", "10", "20", "30"});
-        expected.add(new String[]{"a", "b", "Avion", "40", "50", "60"});
-        expected.add(new String[]{"c", "d", "Bus", "70", "80", "90"});
+        assertEquals(0, p.getSizeTroncons());
 
-        ArrayList<String[]> test = p.ventilation(new String[]{"a;b;Train;10;20;30",
-                                                        "a;b;Avion;40;50;60",
-                                                        "c;d;Bus;70;80;90"});
+        given.add("a;b;Train;30;20;10");
+        p.ventilation(given);
 
-        for(int i=0; i<expected.size(); i++){
-            assertArrayEquals(expected.get(i), test.get(i));
-        }
-
-        assertNull(p.ventilation(null));
+        assertEquals(2, p.getSizeTroncons());
     }
 
     @Test
     public void testIsValid() {
-        ArrayList<String[]> expected =new ArrayList<String[]>();
+        //Test avec valeur négative
+        assertEquals(0, p.getSizeTroncons());
+        given.add("a;b;Train;-1;2;3");
+        p.ventilation(given);
+        assertEquals(0, p.getSizeTroncons());
 
-        String[] inputData = {
-            "a;null;Train;10;20;30",
-            "a;b;Avion;40;50;60",
-            "c;d;Bus;70;80;90"
-        };
+        //Test avec valeur null
+        assertEquals(0, p.getSizeTroncons());
+        given.add("a;b;Train;null;2;3");
+        p.ventilation(given);
+        assertEquals(0, p.getSizeTroncons());
 
-        expected.add(new String[]{"a", "b", "Avion", "40", "50", "60"});
-        expected.add(new String[]{"c", "d", "Bus", "70", "80", "90"});
+        //Test avec champ manquant
+        assertEquals(0, p.getSizeTroncons());
+        given.add("a;b;Train;1;2");
+        p.ventilation(given);
+        assertEquals(0, p.getSizeTroncons());
 
-        for(int i=0; i<expected.size(); i++){
-            assertArrayEquals(expected.get(i), p.ventilation(inputData).get(i));
-        }
-
-        String[] inputData2 = {
-            "a;-10;Train;10;20;30",
-            "a;b;Avion;40;50;60",
-            "c;d;Bus;70;80"
-        };
-    
-        expected.clear();
-        expected.add(new String[]{"a", "b", "Avion", "40", "50", "60"});
-
-        for(int i=0; i<expected.size(); i++){
-            assertArrayEquals(expected.get(i), p.ventilation(inputData2).get(i));
-        }
-
-        String[] inputData3 = {
-            "a;-10;Train;10;20;30",
-            "a;b;Avion;40;50;60",
-            "c;d;Bus;70;80;0;10"
-        };
-
-        expected.clear();
-        expected.add(new String[]{"a", "b", "Avion", "40", "50", "60"});
-
-        for(int i=0; i<expected.size(); i++){
-            assertArrayEquals(expected.get(i), p.ventilation(inputData3).get(i));
-        }
+        //Test avec champ supplémentaire
+        assertEquals(0, p.getSizeTroncons());
+        given.add("a;b;Train;1;2;3;4");
+        p.ventilation(given);
+        assertEquals(0, p.getSizeTroncons());
     }
 
     @Test
     public void testListLieu(){
-        p = new Plateforme(null);
         assertEquals(0, p.getSizeLieux());
         p.listLieux("Arras");
         assertEquals(1, p.getSizeLieux());
@@ -96,34 +83,63 @@ public class TestPlateforme {
 
     @Test
     public void testListTroncon(){
-        p = new Plateforme(null);
         assertEquals(0, p.getSizeTroncons());
 
-        p.ventilation(new String[]{"Lion;Boiry;Train;10;20;30",
-        "Lion;Boiry;Avion;40;50;60",
-        "Courcheveille;Dijon;Bus;70;80;90"});
+        given.add("Lion;Boiry;Train;10;20;30");
+        given.add("Lion;Boiry;Avion;40;50;60");
+        given.add("Courcheveille;Dijon;Bus;70;80;90");
         
+        p.ventilation(given);
+
         assertEquals(6, p.getSizeTroncons());
     }
 
     @Test
     public void testAddData(){
 
-        assertEquals(0, p.getGraphe().sommets().size());
-        assertEquals(0, p.getGraphe().aretes().size());
+        assertEquals(0, p.getSizeLieux());
+        assertEquals(0, p.getSizeTroncons());
 
-        p = new Plateforme(new String[]{"a;b;Train;10;11;12"});
-        assertEquals(2, p.getGraphe().sommets().size());
-        assertEquals(2, p.getGraphe().aretes().size());
+        given.add("a;b;Train;10;11;12");
 
-        p = new Plateforme(new String[]{"a;b;Train;10;11;12", "a;c;Train;13;14;15"});
-        assertEquals(3, p.getGraphe().sommets().size());
-        assertEquals(4, p.getGraphe().aretes().size());
+        p.ventilation(given);
+        assertEquals(2, p.getSizeLieux());
+        assertEquals(2, p.getSizeTroncons());
+
+        given.add("a;c;Train;13;14;15");
+        p = new Plateforme(given);
+        assertEquals(3, p.getSizeLieux());
+        assertEquals(4, p.getSizeTroncons());
     }
 
     @Test
-    public void testChangeCritère(){}
+    public void testChangeCritère(){
+        given.add("a;b;Train;1;2;3");
+        p.ventilation(given);
+
+        p.changeCritère(TypeCout.CO2);
+        for (Trancon tr : p.getGraphe().aretes()) {
+            assertEquals(1, p.getGraphe().getPoidsArete(tr));
+        }
+        
+        p.changeCritère(TypeCout.TEMPS);
+        for (Trancon tr : p.getGraphe().aretes()) {
+            assertEquals(2, p.getGraphe().getPoidsArete(tr));
+        }
+
+        p.changeCritère(TypeCout.PRIX);
+        for (Trancon tr : p.getGraphe().aretes()) {
+            assertEquals(3, p.getGraphe().getPoidsArete(tr));
+        }
+    }
 
     @Test
-    public void testAfficheListLieu(){}
+    public void testIsModality(){
+        assertTrue(p.isModality("Train"));
+        assertTrue(p.isModality("train"));
+        assertTrue(p.isModality("TRAIN"));
+        assertFalse(p.isModality("Camion"));
+        assertFalse(p.isModality("train."));
+        assertFalse(p.isModality("trai"));
+    }
 }
