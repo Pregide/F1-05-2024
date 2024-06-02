@@ -7,9 +7,6 @@ Lille;Train;Avion;35;0.2;10
 Dijon;Valenciennes;Train;150;24.8;168
 Calais;Londre;Train;200;30.2;200
 Amiens;Paris;Train;50;2.2;50
-null;Paris;Train;50;2.2;50
-Valenciennes;null;Train;50;2.2;50
-Valenciennes;Marseille;Train;50;2.2;50;43
 Marseille;Toulouse;Train;50;2.2;50
 Marseille;Toulon;Bus;50;2.2;50
 Toulon;Nice;Bus;50;2.2;50
