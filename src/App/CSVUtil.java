@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 
 public class CSVUtil {
     public final static String DEFAULT_PATH = "res" + System.getProperty("file.separator");
@@ -21,7 +20,6 @@ public class CSVUtil {
             return data;
         } catch (IOException e) {
             System.out.println("Un problème est survenu avec le fichier, vérifier l'emplacement du fichier et son contenu puis réessayer.");
-            System.exit(1);
         } 
         return null;
     }
@@ -36,20 +34,5 @@ public class CSVUtil {
             System.out.println(i + ". " + file.getName());
             i++;
         }
-    }
-
-    public static ArrayList<String> selectionFile() {
-        File[] files = new File(DEFAULT_PATH).listFiles();
-        System.out.println("Voici la liste des fichiers ce trouvant dans le dossier : " + System.getProperty("user.dir") + System.getProperty("file.separator") + DEFAULT_PATH);
-        CSVUtil.afficheListFiles(files);
-        try {
-            System.out.println("\nVeuillez indiquer l'indice de votre fichier");
-            return CSVUtil.importCSV(files[Main.sc.nextInt()-1]);
-        } catch (InputMismatchException e) {
-            System.out.println("Wrong Input Match : Default file selected");
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Wrong Index : Default file selected");
-        }
-        return CSVUtil.importCSV();
     }
 }
