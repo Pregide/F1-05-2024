@@ -34,10 +34,17 @@ public class Plateforme {
     public MultiGrapheOrienteValue getGraphe(){return graphe;}
 
     private boolean isValid(String[] data){
-        for (String string : data){
-            if (string.charAt(0) == '-' || string.equals("null")){
-                return false;
-            }
+        if(data.length != 6) return false;
+        if(data[IDX_DEPART].equals("") || data[IDX_DEPART].equals("null")) return false;
+        if(data[IDX_DESTINATION].equals("") || data[IDX_DESTINATION].equals("null")) return false;
+        if(!isModality(data[IDX_MODALITE])) return false;
+        
+        try {
+            if (Double.parseDouble(data[IDX_POLLUTION]) < 0) return false;
+            if (Double.parseDouble(data[IDX_TEMPS]) < 0) return false;
+            if (Double.parseDouble(data[IDX_PRIX]) < 0) return false;
+        } catch (NumberFormatException e) {
+            return false;
         }
         return true;
     }
@@ -86,8 +93,11 @@ public class Plateforme {
             double temps = Double.parseDouble(tab[IDX_TEMPS]);
             double prix = Double.parseDouble(tab[IDX_PRIX]);
 
-            troncons.add(new MonTroncon(modalite, dep, dest, co2, temps, prix));
-            troncons.add(new MonTroncon(modalite, dest, dep, co2, temps, prix));
+            Trancon tmp = new MonTroncon(modalite, dep, dest, co2, temps, prix);
+            if(!troncons.contains(tmp)){
+                troncons.add(tmp);
+                troncons.add(new MonTroncon(modalite, dest, dep, co2, temps, prix));
+            }
         }
     }
 
