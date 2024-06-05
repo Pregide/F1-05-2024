@@ -21,6 +21,16 @@ public class MonTroncon implements Trancon {
         this.COUT.put(TypeCout.PRIX, price);
     }
 
+    public boolean equals(Object o){
+        if(o == this) return true;
+        if(o == null) return false;
+        if(o.getClass() == MonTroncon.class){
+            MonTroncon tr = (MonTroncon) o;
+            return DEPART.equals(tr.DEPART) && ARRIVEE.equals(tr.ARRIVEE) && MODALITE.equals(tr.MODALITE);
+        }
+        return false;
+    }
+
     public String toString(){
         return MODALITE + "-->" + DEPART + "," + ARRIVEE;
     }
