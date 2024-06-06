@@ -29,12 +29,12 @@ public class Voyageur {
     public void setdepart(Lieu depart) {this.depart = depart;}
     public void setArrive(Lieu arrive) {this.arrive = arrive;}
 
-    public String trajet(MultiGrapheOrienteValue graphe, ModaliteTransport moda, int nbTrajetDemande) throws NoTravelFoundException{
+    public String trajet(MultiGrapheOrienteValue graphe, int nbTrajetDemande) throws NoTravelFoundException{
         List<Chemin> chemin = AlgorithmeKPCC.kpcc(graphe, depart, arrive, nbTrajetDemande);
         if(chemin.size() > 0){
             String res = "";
             for (Chemin trajet : chemin) {
-                res += transcription(trajet) + "\n";
+                res += transcription(trajet) + System.getProperty("line.separator");
             }
             if(res.length() > 0){
                 return res;

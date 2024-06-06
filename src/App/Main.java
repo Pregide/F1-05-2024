@@ -6,7 +6,6 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import App.exception.NoTravelFoundException;
-import fr.ulille.but.sae_s2_2024.ModaliteTransport;
 import graph.TypeCout;
 
 public class Main {
@@ -66,7 +65,7 @@ public class Main {
             System.out.println("Wrong Input Format : Default selection 1");
             v.setdepart(p.getLieu(0));
         } catch (IndexOutOfBoundsException e){
-            System.out.println("Wrong Index : Default selection 1"); e.getMessage();
+            System.out.println("Wrong Index : Default selection 1");
             v.setdepart(p.getLieu(0));
         }
 
@@ -82,24 +81,11 @@ public class Main {
         } catch (IndexOutOfBoundsException e){
             System.out.println("Wrong Index : Default selection 1"); e.getMessage();
             v.setArrive(p.getLieu(0));
-        }
-
-        ModaliteTransport moda;
-        try {
-            System.out.println("Choisissez une Modalité :");
-            for (int i=0; i<ModaliteTransport.values().length; i++) {
-                System.out.println((i+1) + ". " + ModaliteTransport.values()[i]);
-            }
-            moda = ModaliteTransport.values()[sc.nextInt()-1];
-        } catch (Exception e) {
-            System.out.println("Wrong Index : Default Modality Train");
-            moda = ModaliteTransport.TRAIN;
-        }
-        
+        }        
 
         try {
             System.out.println("\nChemin possible : ");
-            System.out.println(v.trajet(p.getGraphe(), moda, 10));
+            System.out.println(v.trajet(p.getGraphe(), 3));
         } catch (NoTravelFoundException e){}
     }
 }
