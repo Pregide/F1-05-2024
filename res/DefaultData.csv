@@ -3,7 +3,6 @@ Douai;Arras;Train;20;1.8;30
 Arras;Amiens;Train;40;3.2;80
 Paris;Lille;Avion;120;32.2;240
 Lille;Dijon;Avion;320;160.2;400
-Lille;Train;Avion;35;0.2;10
 Dijon;Valenciennes;Train;150;24.8;168
 Calais;Londre;Train;200;30.2;200
 Amiens;Paris;Train;50;2.2;50
