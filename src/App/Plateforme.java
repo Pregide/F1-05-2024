@@ -6,30 +6,38 @@ import fr.ulille.but.sae_s2_2024.Lieu;
 import fr.ulille.but.sae_s2_2024.ModaliteTransport;
 import fr.ulille.but.sae_s2_2024.MultiGrapheOrienteValue;
 import fr.ulille.but.sae_s2_2024.Trancon;
+import graph.Correspondance;
 import graph.MonLieu;
 import graph.MonTroncon;
-import graph.TypeCout;  
+import graph.TypeCout;
+import graph.exception.IncompatibleModalityException;  
 
 public class Plateforme {
     private final static int IDX_DEPART = 0;
     private final static int IDX_DESTINATION = 1;
     private final static int IDX_MODALITE = 2;
-    private final static int IDX_PRIX = 3;
+    private final static int IDX_TEMPS = 3;
     private final static int IDX_POLLUTION = 4;
-    private final static int IDX_TEMPS = 5;
+    private final static int IDX_PRIX = 5;
 
-    private final ArrayList<Lieu> lieux = new ArrayList<Lieu>();
-    private final ArrayList<Trancon> troncons = new ArrayList<Trancon>();
-    private final MultiGrapheOrienteValue graphe = new MultiGrapheOrienteValue();
+    private final ArrayList<Lieu> lieux;
+    private final ArrayList<Trancon> troncons;
+    private final ArrayList<Correspondance> correspondances;
+    private final MultiGrapheOrienteValue graphe;
 
     public Plateforme(ArrayList<String> data) throws NullPointerException{
         if(data == null) throw new NullPointerException();
+        this.lieux = new ArrayList<Lieu>();
+        this.troncons = new ArrayList<Trancon>();
+        this.correspondances = new ArrayList<Correspondance>();
+        this.graphe = new MultiGrapheOrienteValue();
         ventilation(data);
         addData();
     }
 
     public int getSizeLieux(){return lieux.size();}
     public int getSizeTroncons(){return troncons.size();}
+    public int getSizeCorrespondances(){return correspondances.size();}
     public Lieu getLieu(int idx){return lieux.get(idx);}
     public MultiGrapheOrienteValue getGraphe(){return graphe;}
 
@@ -58,7 +66,7 @@ public class Plateforme {
     public void ventilation(ArrayList<String> data){
         for (String chaine : data) {
             String[] parts = chaine.split(";");
-            if (parts.length == 6 && isValid(parts)) {
+            if (isValid(parts)) {
                 listTroncon(parts);
             }
         }
@@ -85,19 +93,25 @@ public class Plateforme {
      * @param tab Toute les informations sur un troncon
      */
     public void listTroncon(String[] tab){
+        Lieu dep = listLieux(tab[IDX_DEPART]);
+        ModaliteTransport modalite = ModaliteTransport.valueOf(tab[IDX_MODALITE].toUpperCase());
+        double co2 = Double.parseDouble(tab[IDX_POLLUTION]);
+        double temps = Double.parseDouble(tab[IDX_TEMPS]);
+        double prix = Double.parseDouble(tab[IDX_PRIX]);
+
         if(!isModality(tab[IDX_DESTINATION])){
-            Lieu dep = listLieux(tab[IDX_DEPART]);
             Lieu dest = listLieux(tab[IDX_DESTINATION]);
-            ModaliteTransport modalite = ModaliteTransport.valueOf(tab[IDX_MODALITE].toUpperCase());
-            double co2 = Double.parseDouble(tab[IDX_POLLUTION]);
-            double temps = Double.parseDouble(tab[IDX_TEMPS]);
-            double prix = Double.parseDouble(tab[IDX_PRIX]);
 
             Trancon tmp = new MonTroncon(modalite, dep, dest, co2, temps, prix);
             if(!troncons.contains(tmp)){
                 troncons.add(tmp);
                 troncons.add(new MonTroncon(modalite, dest, dep, co2, temps, prix));
             }
+        } else {
+            ModaliteTransport moda2 = ModaliteTransport.valueOf(tab[IDX_DESTINATION].toUpperCase());
+            try {
+                correspondances.add(new Correspondance(dep, moda2, modalite, co2, temps, prix));
+            } catch (IncompatibleModalityException e) {}
         }
     }
 

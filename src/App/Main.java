@@ -6,6 +6,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import App.exception.NoTravelFoundException;
+import fr.ulille.but.sae_s2_2024.ModaliteTransport;
 import graph.TypeCout;
 
 public class Main {
@@ -85,7 +86,7 @@ public class Main {
 
         try {
             System.out.println("\nChemin possible : ");
-            System.out.println(v.trajet(p.getGraphe(), 3));
+            System.out.println(v.trajet(p.getGraphe(), new ArrayList<ModaliteTransport>(), 3));
         } catch (NoTravelFoundException e){}
     }
 }
