@@ -40,6 +40,7 @@ public class TestPlateforme {
         assertEquals(0, p.getSizeTroncons());
 
         given.add("a;b;Train;30;20;10");
+        given.add("t;t;t;z;z;z");
         p.ventilation(given);
 
         assertEquals(2, p.getSizeTroncons());
@@ -84,14 +85,17 @@ public class TestPlateforme {
     @Test
     public void testListTroncon(){
         assertEquals(0, p.getSizeTroncons());
+        assertEquals(0, p.getSizeCorrespondances());
 
         given.add("Lion;Boiry;Train;10;20;30");
         given.add("Lion;Boiry;Avion;40;50;60");
         given.add("Courcheveille;Dijon;Bus;70;80;90");
+        given.add("Lion;Train;Avion;30;20;10");
         
         p.ventilation(given);
 
         assertEquals(6, p.getSizeTroncons());
+        assertEquals(1, p.getSizeCorrespondances());
     }
 
     @Test
