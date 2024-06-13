@@ -52,7 +52,7 @@ public class Correspondance implements Lieu {
         if (o == this) return true;
         if (o.getClass() == Correspondance.class){
             Correspondance tmp = (Correspondance) o;
-            return VILLE.equals(tmp.VILLE) && PROV == tmp.PROV && SUIE == tmp.SUIE;
+            return VILLE.equals(tmp.VILLE) && (PROV == tmp.PROV || PROV == tmp.SUIE) && (SUIE == tmp.SUIE || SUIE == tmp.PROV);
         }
         return false;
     }

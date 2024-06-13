@@ -2,6 +2,7 @@ package App;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,8 +19,12 @@ public class CSVUtil {
                 data.add(str);
             } 
             return data;
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+            System.exit(-1);
         } catch (IOException e) {
-            System.out.println("Un problème est survenu avec le fichier, vérifier l'emplacement du fichier et son contenu puis réessayer.");
+            System.out.println("Un problème est survenu avec le fichier, vérifier son contenu puis réessayer.");
+            e.printStackTrace();
         } 
         return null;
     }
