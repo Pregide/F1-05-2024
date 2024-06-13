@@ -62,6 +62,7 @@ public class Main {
             System.out.println("Wrong Input : Default selection 1");
             listCrit = Main.tousCout();
         }
+        p.changeCritère(listCrit);
 
         //Afficher trajet
         try {
@@ -70,6 +71,8 @@ public class Main {
         } catch (NoTravelFoundException e){
             e.getMessage();
         }
+
+        //Enregistrer le trajet
     }
 
     private static File selectFile(){
@@ -127,23 +130,24 @@ public class Main {
     }
 
     private static List<TypeCout> choixCout(){
-        System.out.println(System.getProperty("line.separator") + "Choisissez un premier critère");        
-        System.out.println("1) All");
-        int i=2;
+        System.out.println(System.getProperty("line.separator") + "Choisissez le critère prioritère");        
+        int i=1;
         for (TypeCout cout : TypeCout.values()) {
             System.out.println(i + ") " + cout);
             i++;
         }
+        i=5;
         System.out.print(">>> ");
         choice = sc.nextInt();
-        if(choice == 1) return Main.tousCout();
+        i -= choice;
         ArrayList<TypeCout> res = new ArrayList<>();
-        res.add(TypeCout.values()[choice-2]);
-        System.out.println("Saisissez -1 pour quitter ou une autre critère");
+        res.add(TypeCout.values()[choice-1]);
+        System.out.println("Saisissez le deuxième critère");
         System.out.print(">>> ");
         choice = sc.nextInt();
-        if(choice == -1) return res;
-        res.add(TypeCout.values()[choice-2]);
+        i -= choice;
+        res.add(TypeCout.values()[choice-1]);
+        res.add(TypeCout.values()[i]);
         return res;
     }
 }

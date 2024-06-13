@@ -1,7 +1,18 @@
 package App;
 
+/*
+ * TO DO V2:
+ * - Correspondences 
+ * 
+ * TO DO V3:
+ * - Critère (si un seul critère, si 2 critères, si tout les critères) pour la V3
+ */
 import java.util.ArrayList;
+import java.util.List;
 
+import App.exception.NoTravelFoundException;
+import fr.ulille.but.sae_s2_2024.AlgorithmeKPCC;
+import fr.ulille.but.sae_s2_2024.Chemin;
 import fr.ulille.but.sae_s2_2024.Lieu;
 import fr.ulille.but.sae_s2_2024.ModaliteTransport;
 import fr.ulille.but.sae_s2_2024.MultiGrapheOrienteValue;
@@ -25,8 +36,7 @@ public class Plateforme {
     private final ArrayList<Correspondance> correspondances;
     private final MultiGrapheOrienteValue graphe;
 
-    public Plateforme(ArrayList<String> data) throws NullPointerException{
-        if(data == null) throw new NullPointerException();
+    public Plateforme(ArrayList<String> data) {
         this.lieux = new ArrayList<Lieu>();
         this.troncons = new ArrayList<Trancon>();
         this.correspondances = new ArrayList<Correspondance>();
@@ -138,11 +148,11 @@ public class Plateforme {
      * 
      * @param cout Critère de séléction
      */
-    public void changeCritère(TypeCout cout){
+    public void changeCritère(List<TypeCout> crit){
         for (Trancon tr : graphe.aretes()) {
-            graphe.modifierPoidsArete(tr, ((MonTroncon) tr).getCout(cout));
+            graphe.modifierPoidsArete(tr, (((MonTroncon) tr).getCout(crit.get(0))*0.6 + ((MonTroncon) tr).getCout(crit.get(1))*0.3 + ((MonTroncon) tr).getCout(crit.get(2)))*0.1);
         }
-    }
+    } //change a partir de la liste de cout mettre le premier critère a *0.6 le 2e a 0.3 et le 3e a 0.1
 
     /**
      * Affiche la liste de tous les Lieux connus
@@ -157,5 +167,39 @@ public class Plateforme {
             i++;
         }
         return res;
+    }
+
+    public String trajet(Lieu depart, Lieu arrive, List<ModaliteTransport> listModa, int nbTrajetDemande) throws NoTravelFoundException{
+        List<Chemin> chemin = AlgorithmeKPCC.kpcc(graphe, depart, arrive, nbTrajetDemande);
+        if(chemin.size() > 0){
+            String res = "";
+            for (Chemin trajet : chemin) {
+                if(trajetValid(trajet, listModa)) res += transcription(trajet) + System.getProperty("line.separator");
+            }
+            if(res.length() > 0) return res;
+        } 
+        throw new NoTravelFoundException("No Travel Possible");
+    }
+
+    public String transcription(Chemin chemin){
+        String res = "";
+        ModaliteTransport lastModa = null;
+        Lieu lastLieu = null;
+        for (Trancon tr : chemin.aretes()){
+            lastLieu = tr.getArrivee();
+            if(lastModa != tr.getModalite()){
+                lastModa = tr.getModalite();
+                res += tr.getDepart() + " ---" + lastModa + "--> ";
+            }
+        }
+        res +=  lastLieu + ", Poids: " + chemin.poids();
+        return res;
+    }
+
+    public boolean trajetValid(Chemin chem, List<ModaliteTransport> listModa){
+        for (Trancon tr : chem.aretes()) {
+            if(!listModa.contains(tr.getModalite())) return false;
+        }
+        return true;
     }
 }
