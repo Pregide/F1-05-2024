@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class CSVUtil {
-    public final static String DEFAULT_PATH = "res" + System.getProperty("file.separator");
+    public final static String DEFAULT_PATH = "res" + System.getProperty("file.separator") + "Data" + System.getProperty("file.separator");
     private final static String DEFAULT_FILE = "DefaultData.csv";
 
     public static ArrayList<String> importCSV(File file){
