@@ -31,13 +31,12 @@ public class Plateforme {
     private final static int IDX_POLLUTION = 4;
     private final static int IDX_PRIX = 5;
 
-    private final ArrayList<Lieu> lieux;
+    public final static ArrayList<Lieu> lieux = new ArrayList<Lieu>();
     private final ArrayList<Trancon> troncons;
     private final ArrayList<Correspondance> correspondances;
     private final MultiGrapheOrienteValue graphe;
 
     public Plateforme(ArrayList<String> data) {
-        this.lieux = new ArrayList<Lieu>();
         this.troncons = new ArrayList<Trancon>();
         this.correspondances = new ArrayList<Correspondance>();
         this.graphe = new MultiGrapheOrienteValue();

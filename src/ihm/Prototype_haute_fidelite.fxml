@@ -6,28 +6,31 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="589.0" prefWidth="848.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <VBox layoutY="64.0" prefHeight="525.0" prefWidth="197.0" style="-fx-background-color: #D3D3D3;">
+<BorderPane prefHeight="589.0" prefWidth="848.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihm.Controleur">
+   <left>
+      <VBox prefHeight="525.0" prefWidth="197.0" style="-fx-background-color: #D3D3D3;" BorderPane.alignment="CENTER">
          <children>
             <Group layoutY="20.0">
                <children>
-                  <ChoiceBox id="VilleDepart" fx:id="VilleArrive" prefWidth="150.0">
+                  <ChoiceBox id="VilleDepart" fx:id="villeDepart" prefWidth="150.0">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                   </ChoiceBox>
-                  <ChoiceBox id="VilleArrive" layoutY="40.0" prefWidth="150.0" />
+                  <ChoiceBox id="VilleArrive" fx:id="villeArrive" layoutY="40.0" prefWidth="150.0" />
                </children>
                <VBox.margin>
-                  <Insets left="20.0" top="20.0" />
+                  <Insets bottom="10.0" left="20.0" top="10.0" />
                </VBox.margin>
             </Group>
+            <Separator prefWidth="200.0" />
             <Group>
                <children>
                   <Label text="Modalité :">
@@ -35,7 +38,22 @@
                         <Insets />
                      </opaqueInsets>
                   </Label>
-                  <CheckBox mnemonicParsing="false" text="All">
+                  <CheckBox fx:id="busCheckBox" mnemonicParsing="false" prefHeight="68.0" prefWidth="154.0" text="Bus">
+                     <padding>
+                        <Insets left="20.0" top="75.0" />
+                     </padding>
+                  </CheckBox>
+                  <CheckBox fx:id="trainCheckBox" mnemonicParsing="false" text="Train">
+                     <padding>
+                        <Insets left="20.0" top="55.0" />
+                     </padding>
+                  </CheckBox>
+                  <CheckBox fx:id="avionCheckBox" mnemonicParsing="false" text="Avion">
+                     <padding>
+                        <Insets left="20.0" top="35.0" />
+                     </padding>
+                  </CheckBox>
+                  <CheckBox fx:id="allModality" mnemonicParsing="false" onAction="#AllValidation" text="All">
                      <padding>
                         <Insets left="20.0" top="15.0" />
                      </padding>
@@ -43,46 +61,50 @@
                         <Insets />
                      </opaqueInsets>
                   </CheckBox>
-                  <CheckBox mnemonicParsing="false" text="Avion">
-                     <padding>
-                        <Insets left="20.0" top="35.0" />
-                     </padding>
-                  </CheckBox>
-                  <CheckBox mnemonicParsing="false" text="Train">
-                     <padding>
-                        <Insets left="20.0" top="55.0" />
-                     </padding>
-                  </CheckBox>
-                  <CheckBox mnemonicParsing="false" prefHeight="68.0" prefWidth="154.0" text="Bus">
-                     <padding>
-                        <Insets left="20.0" top="75.0" />
-                     </padding>
-                  </CheckBox>
                </children>
                <VBox.margin>
-                  <Insets left="20.0" top="30.0" />
+                  <Insets bottom="10.0" left="20.0" top="10.0" />
                </VBox.margin>
             </Group>
+            <Separator prefWidth="200.0" />
             <Group>
                <children>
-                  <ChoiceBox prefWidth="150.0" />
-                  <ChoiceBox layoutY="40.0" prefWidth="150.0">
+                  <Label layoutX="10.0" text="Critères priority" />
+                  <Label layoutX="20.0" layoutY="136.0" text="Limite" />
+                  <ChoiceBox fx:id="critere1" layoutY="20.0" prefWidth="160.0" />
+                  <TextField layoutX="80.0" layoutY="132.0" maxWidth="65.0" />
+                  <ChoiceBox fx:id="critere2" layoutY="60.0" prefWidth="160.0">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                   </ChoiceBox>
-                  <ChoiceBox layoutY="80.0" prefWidth="150.0" />
+                  <ChoiceBox fx:id="critere3" layoutY="100.0" prefWidth="160.0" />
                </children>
                <VBox.margin>
-                  <Insets left="20.0" top="50.0" />
+                  <Insets bottom="10.0" left="15.0" top="10.0" />
                </VBox.margin>
             </Group>
-            <Button mnemonicParsing="false" style="-fx-background-color: red;" text="Annuler">
+            <Separator prefWidth="200.0" />
+            <Group>
+               <children>
+                  <Label text="Nombre de trajet">
+                     <padding>
+                        <Insets left="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="limitePoids" layoutX="130.0" maxWidth="35.0" />
+               </children>
                <VBox.margin>
-                  <Insets left="20.0" top="60.0" />
+                  <Insets bottom="10.0" left="20.0" top="10.0" />
+               </VBox.margin>
+            </Group>
+            <Separator prefWidth="200.0" />
+            <Button fx:id="annulation" mnemonicParsing="false" style="-fx-background-color: red;" text="Annuler">
+               <VBox.margin>
+                  <Insets left="20.0" top="10.0" />
                </VBox.margin>
             </Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Valider">
+            <Button fx:id="validation" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Valider">
                <VBox.margin>
                   <Insets left="20.0" top="10.0" />
                </VBox.margin>
@@ -92,11 +114,13 @@
             </Button>
          </children>
       </VBox>
-      <HBox prefHeight="65.0" prefWidth="848.0" style="-fx-background-color: grey;">
+   </left>
+   <top>
+      <HBox prefHeight="65.0" prefWidth="848.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" text="File">
+            <Button fx:id="fileButton" mnemonicParsing="false" onAction="#Importation" text="File">
                <HBox.margin>
-                  <Insets left="30.0" top="10.0" />
+                  <Insets left="20.0" top="10.0" />
                </HBox.margin>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -104,7 +128,8 @@
             </Button>
          </children>
       </HBox>
-      <Pane layoutX="197.0" layoutY="65.0" prefHeight="418.0" prefWidth="653.0" style="-fx-background-color: 9D9D9D;" />
-      <HBox layoutX="195.0" layoutY="483.0" prefHeight="106.0" prefWidth="653.0" style="-fx-background-color: #999999;" />
-   </children>
-</Pane>
+   </top>
+   <center>
+      <ListView fx:id="listChemin" prefHeight="525.0" prefWidth="653.0" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>
