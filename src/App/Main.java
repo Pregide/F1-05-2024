@@ -64,10 +64,21 @@ public class Main {
         }
         p.changeCritère(listCrit);
 
+        //limitation
+        int limit = 1000;
+        try {
+            System.out.print(System.getProperty("line.separator") + "Définissez une limite :");
+            limit = sc.nextInt();
+        } catch (InputMismatchException e) {
+        }
+
         //Afficher trajet
         try {
             System.out.println(System.getProperty("line.separator") + "Chemin possible :");
-            System.out.println(p.trajet(depart, arrive, listModa, 5));
+            for (String str : p.trajet(depart, arrive, listModa, 5, limit)) {
+                System.out.println(str);
+            }
+            
         } catch (NoTravelFoundException e){
             e.getMessage();
         }

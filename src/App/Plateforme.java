@@ -168,14 +168,14 @@ public class Plateforme {
         return res;
     }
 
-    public String trajet(Lieu depart, Lieu arrive, List<ModaliteTransport> listModa, int nbTrajetDemande) throws NoTravelFoundException{
+    public ArrayList<String> trajet(Lieu depart, Lieu arrive, List<ModaliteTransport> listModa, int nbTrajetDemande, int limit) throws NoTravelFoundException{
         List<Chemin> chemin = AlgorithmeKPCC.kpcc(graphe, depart, arrive, nbTrajetDemande);
         if(chemin.size() > 0){
-            String res = "";
+            ArrayList<String> res = new ArrayList<>();
             for (Chemin trajet : chemin) {
-                if(trajetValid(trajet, listModa)) res += transcription(trajet) + System.getProperty("line.separator");
+                if(trajetValid(trajet, listModa, limit)) res.add(transcription(trajet));
             }
-            if(res.length() > 0) return res;
+            if(res.size() > 0) return res;
         } 
         throw new NoTravelFoundException("No Travel Possible");
     }
@@ -195,9 +195,9 @@ public class Plateforme {
         return res;
     }
 
-    public boolean trajetValid(Chemin chem, List<ModaliteTransport> listModa){
+    public boolean trajetValid(Chemin chem, List<ModaliteTransport> listModa, int limit){
         for (Trancon tr : chem.aretes()) {
-            if(!listModa.contains(tr.getModalite())) return false;
+            if(!listModa.contains(tr.getModalite()) && chem.poids() <= limit) return false;
         }
         return true;
     }
