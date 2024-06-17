@@ -1,12 +1,5 @@
 package App;
 
-/*
- * TO DO V2:
- * - Correspondences 
- * 
- * TO DO V3:
- * - Critère (si un seul critère, si 2 critères, si tout les critères) pour la V3
- */
 import java.util.ArrayList;
 import java.util.List;
 
