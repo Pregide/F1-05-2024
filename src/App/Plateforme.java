@@ -197,7 +197,7 @@ public class Plateforme {
 
     public boolean trajetValid(Chemin chem, List<ModaliteTransport> listModa, int limit){
         for (Trancon tr : chem.aretes()) {
-            if(!listModa.contains(tr.getModalite()) && chem.poids() <= limit) return false;
+            if(!listModa.contains(tr.getModalite()) || chem.poids() > limit) return false;
         }
         return true;
     }

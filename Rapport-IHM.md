@@ -8,7 +8,7 @@ date: 18-06-2024
 ---
 
 # V2
-La première partie de crée une interface est identifié les besoins que l'on a, nous avions donc:
+La première partie est de crée une interface est identifié les besoins que l'on a, nous avions donc:
 - Demander un trajet de A à B
 - Proposer des critères de sélection
 - Proposer des modalités différentes
@@ -22,7 +22,7 @@ Nous avons donc fait une première maquette:
     <img src="res/Images/IHM_Maquette.jpg" alt="IHM Maquette" width="400">
 </div>
 
-L'idée était crée, et nous avons donc pu avancé sur la V3
+L'idée était crée, nous avons donc pu avancé sur la V3
 
 # V3
 Il nous fallait ici un prototype haute fidélité, nous avons donc refait une maquette mais sur figma, un site fait pour cela.

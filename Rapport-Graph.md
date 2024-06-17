@@ -10,7 +10,7 @@ date: 18-06-2024
 # V1
 Dans cette première partie de graphe nous devions:
 - Modélisatier le problème pour la Version 1
-- Utilisatier la bibliothèque fournie pour calculer les voyages optimaux
+- Utiliser la bibliothèque fournie pour calculer les voyages optimaux
 
 Le calcul des voyages optimaux c'est fait à l'aide de l'AlgorithmeKPCC pour lequel il fallait fournir le graphe, le départ et l'arrivé du chemin.
 
@@ -24,7 +24,7 @@ Dans cette deuxième partie de graphe nous devions:
 
 La difficulté dans celui ci était que le graphe avait 3 types de coût celon ce que voulait l'utilisateur. Il nous fallait donc inventer un système pouvant facilement faire ça.
 
-- Implémentatier un scénario illustrant le bon fonctionnement du système
+- Implémenter un scénario illustrant le bon fonctionnement du système
 
 # V3
 Dans cette dernière partie de graphe nous devions:
