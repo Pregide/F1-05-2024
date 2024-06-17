@@ -68,7 +68,11 @@ La methode *toString()* nous renvoie l'affichage tel que : < Modalité > --> < d
 ![Class CSVUtil.java]()
 
 Cette classe a pour unique but de gérer toute actions liées aux fichiers, à savoir le chargement des fichiers via les methodes *"importCSV()"* et *"importCSV(File)"*
-Le methode *"afficheListFile(File[])"* prend en paramètre un tableau de *File*, provenant du main elle doit simplement afficher tout les fichiers disponible dans un répertoir prédéfinie.  
+
+La methode *"afficheListFile(File[])"* prend en paramètre un tableau de *File*, provenant du main elle doit simplement afficher tout les fichiers disponible dans un répertoir prédéfinie.  
 Ce répertoir est le **res** puis le sous répertoir **Data** dans ce dépot git.
+
+La méthode *"importCSV(File file)*" prend un fichier en paramêtre et renvoit celui si sous en type String, Si le fichier est mauvais ou si il y a une erreur avec le fichier une erreur sera renvoyer.
+
 
 # V3
