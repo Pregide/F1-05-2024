@@ -1,9 +1,9 @@
 ---
 title: Rapport Saé 201-202 
 autor:
-> Thomas Smeeckaert
-> Milan Theron
-> Ylies Ertam
+- Thomas Smeeckaert
+- Milan Theron
+- Ylies Ertam
 date: 18-06-2024
 ---
 
@@ -14,9 +14,7 @@ Dans cette première partie de graphe nous devions:
 
 Le calcul des voyages optimaux c'est fait à l'aide de l'AlgorithmeKPCC pour lequel il fallait fournir le graphe, le départ et l'arrivé du chemin.
 
-<div style="text-align: center;">
-    <img src="res/Images/Prototype_Graphe.jpg" alt="Graphe Modelisation" width="350">
-</div>
+![Graphe Modelisation](res/Images/Prototype_Graphe.jpg)
 
 # V2
 Dans cette deuxième partie de graphe nous devions:

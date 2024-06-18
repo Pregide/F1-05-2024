@@ -1,9 +1,9 @@
 ---
 title: Rapport Saé 201-202 
 autor:
-> Thomas Smeeckaert
-> Milan Theron
-> Ylies Ertam
+- Thomas Smeeckaert
+- Milan Theron
+- Ylies Ertam
 date: 18-06-2024
 ---
 
@@ -19,7 +19,8 @@ La première version de cette application doit répondre aux éxigences suivante
 
 Grace au 2 package suivant nous avons pus satisfaire ces éxigences.
 
-Voici le diagrame UML de cette application pour la V1
+Voici le diagrame UML de cette application pour la V1.
+
 ![Diagram UML V1](res/Images/Diagram_complet_UML_V1.png)
 
 ### Package App V1
@@ -76,6 +77,7 @@ Les 3 types de critères présents sont :
 ## V2
 
 Le diagram UML de la V2.
+
 ![Diagram UML V2](res/Images/Diagram_complet_UML_V2.png)
 
 ### Package App V2
@@ -114,6 +116,7 @@ La class *IncompatibleModalityException* est une class d'exception, l'exception 
 ## V3
 
 Le diagram UML pour cette V3.
+
 ![Diagram UML V3](res/Images/Diagram_complet_UML_V3.png)
 
 Vous pouvez aussi retrouver le diagram UML réaliser sur le site de LucidChart (a condition d'avoir un compte) avec ce [lien](https://lucid.app/lucidchart/d344f6c7-c5b0-4d8d-b7c6-84bda1fe0ff2/edit?invitationId=inv_97244040-35ec-411f-a1d7-6d3a6638ade9&page=0_0#)
